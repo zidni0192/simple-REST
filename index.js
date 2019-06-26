@@ -24,22 +24,22 @@ app.get('/book', (req, res) => {
   if (search.category && search.location) {
     conn.query('SELECT * FROM book LEFT JOIN category ON book.category_id = category.categoryid WHERE category.name = ? AND book.location = ?', [search.category, search.location], (err, results) => {
       if (err)console.log(err)
-      res.json(results)
+      res.status(200).json({ error: null, status: 200, results })
     })
   } else if (search.location) {
-    conn.query('SELECT * FROM book LEFT JOIN category ON book.category_id = category.categoryid WHERE book.location = ?', search.location, (err, results) => {
+    conn.query('SELECT * FROM book LEFT JOIN category ON book.category_id = category.categoryid  WHERE book.location = ?', search.location, (err, results) => {
       if (err)console.log(err)
-      res.json(results)
+      res.status(200).json({ error: null, status: 200, results })
     })
   } else if (search.category) {
     conn.query('SELECT * FROM book LEFT JOIN category ON book.category_id = category.categoryid WHERE category.name = ? ', search.category, (err, results) => {
       if (err)console.log(err)
-      res.json(results)
+      res.status(200).json({ error: null, status: 200, results })
     })
   } else {
     conn.query('SELECT book.*,category.name as category FROM book LEFT JOIN category ON book.category_id = category.categoryid', (err, results) => {
       if (err) console.log(err)
-      res.json(results)
+      res.status(200).json({ error: null, status: 200, results })
     })
   }
 })
@@ -55,7 +55,7 @@ app.post('/book', (req, res) => {
   }
   conn.query('INSERT INTO book SET ?', data, (err, results) => {
     if (err) console.log(err)
-    res.json(results)
+    res.status(200).json({ error: null, status: 200, results })
   })
 })
 
@@ -70,7 +70,7 @@ app.patch('/book/:book_id', (req, res) => {
   const bookid = req.params.book_id
   conn.query('UPDATE book SET ? WHERE bookid = ?', [data, bookid], (err, results) => {
     if (err)console.log(err)
-    res.json(results)
+    res.status(200).json({ error: null, status: 200, results })
   })
 })
 
@@ -78,14 +78,14 @@ app.delete('/book/:book_id', (req, res) => {
   const bookid = req.params.book_id
   conn.query('DELETE FROM book WHERE bookid = ? ', bookid, (err, results) => {
     if (err)console.log(err)
-    res.json(results)
+    res.json({ results })
   })
 })
 
 app.get('/category', (req, res) => {
   conn.query('SELECT * FROM category', (err, results) => {
     if (err)console.log(err)
-    res.json(results)
+    res.status(200).json({ error: null, status: 200, results })
   })
 })
 
@@ -97,7 +97,7 @@ app.post('/category', (req, res) => {
   }
   conn.query('INSERT INTO category SET ?', data, (err, results) => {
     if (err)console.log(err)
-    res.json(results)
+    res.status(200).json({ error: null, status: 200, results })
   })
 })
 
@@ -109,7 +109,7 @@ app.patch('/category/:categoryid', (req, res) => {
   const categoryid = req.params.categoryid
   conn.query('UPDATE category SET ? WHERE categoryid = ?', [data, categoryid], (err, results) => {
     if (err) console.log(err)
-    res.json(results)
+    res.status(200).json({ error: null, status: 200, results })
   })
 })
 
@@ -117,6 +117,6 @@ app.delete('/category/:categoryid', (req, res) => {
   const categoryid = req.params.categoryid
   conn.query('DELETE FROM category WHERE categoryid = ?', categoryid, (err, results) => {
     if (err) console.log(err)
-    res.json(results)
+    res.status(200).json({ error: null, status: 200, results })
   })
 })
